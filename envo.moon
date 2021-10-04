@@ -87,3 +87,6 @@ Envo = (Namespace, Key) ->
 			}
 			
 			pcall writefile, Path, Package
+
+getgenv!.Envo = Envo
+Envo
