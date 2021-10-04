@@ -16,26 +16,27 @@ JSON =
 	stringify: HttpService\JSONEncode
 	parse: HttpService\JSONDecode
 
-Keyer = (Namespace, Sep, Extension) ->
+Keyer = (Namespace) ->
 	(Key) -> 
-		Name = Key .. Extension
-		Base = './envo/' .. Namespace .. Sep
+		Name = Key .. '.json'
+		Base = './envo/' .. Namespace .. '_'
 		Base .. Name
 
 isValidFile = (Path) ->
 	S, E = pcall isfile, Path
 	S and E
 
-(Namespace, Key, Sep = '_', Extension = '.json') ->
-	assert Namespace, 'envo: namespace is required!'
-	assert Key, 'envo: key is required!'
+Envo = (Namespace, Key) ->
+	assert (type Namespace) == 'string', 'envo: namespace is required! (string)'
+	assert (type Key) == 'string', 'envo: key is required! (string)'
 
-	keyer = Keyer Namespace, Sep, Extension
+	keyer = Keyer Namespace
 	SK = derive Key, 32
 
 	Environment = {}
 	setmetatable {}, 
 		__index: (K) =>
+			assert (type K) == 'string', 'envo: key must be a string!'
 			if V = Environment[K]
 				return V
 
@@ -57,6 +58,7 @@ isValidFile = (Path) ->
 			nil
 
 		__newindex: (K, V) =>
+			assert (type K) == 'string', 'envo: key must be a string!'
 			Old = Environment[K]
 			if Old == V
 				return unless V == nil
