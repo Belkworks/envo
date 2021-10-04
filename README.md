@@ -4,7 +4,7 @@
 
 **Importing with [Neon](https://github.com/Belkworks/NEON)**:
 ```lua
-Envo = NEON:github('belkworks', 'envo')
+Envo = NEON:github('belkworks', 'envo', {secured="Envo"})
 ```
 
 ## API
